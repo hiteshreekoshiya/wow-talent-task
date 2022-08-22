@@ -25,16 +25,17 @@ const Home = () => {
   const [churn, setChurn] = useState('')
   const [totalInstall, setTotalInstall] = useState('')
   const [totalUnInstall, setTotalUnInstall] = useState('')
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(50)
   const [listData, setListData] = useState([])
 
   useEffect(() => {
+    console.log('called...')
+
     axios
       .get(
         `https://admindevapi.wowtalent.live/api/admin/dashboard/installstatasticlist?fromdate=${startDate}&todate=${endDate}`,
       )
       .then((res) => {
-        console.log('res...', res)
         setListData(res.data.data)
       })
       .catch((error) => {
@@ -171,7 +172,7 @@ const Home = () => {
           </div>
         </div>
       ),
-      churn_rate: `${data.totalchurn}%`,
+      churn_rate: data?.totalchurn?`${data.totalchurn}%`:'-',
       churn_plateform: (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div
@@ -184,7 +185,9 @@ const Home = () => {
             <AndroidOutlined
               style={{ marginBottom: '5px', marginRight: '5px' }}
             />
-            <span>{data.android_churn}%</span>
+            {data?.android_churn ? (
+              <span>{data.android_churn}</span>
+            ): '-'}
           </div>
           <div
             style={{
@@ -196,7 +199,9 @@ const Home = () => {
             <AppleOutlined
               style={{ marginBottom: '5px', marginRight: '5px' }}
             />
-            <span>{data.ios_churn}%</span>
+             {data?.ios_churn ? (
+              <span>{data.ios_churn}%</span>
+              ): '-'}
           </div>
         </div>
       ),
@@ -261,7 +266,7 @@ const Home = () => {
                   border: '1px solid #707070',
                   borderRadius: '30px',
                   backgroundColor: '#FFFFFF',
-                  marginLeft: -7,
+                  marginLeft: -10,
                 }}
               >
                 <DownloadOutlined
@@ -278,7 +283,7 @@ const Home = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   marginTop: '8px',
-                  marginLeft: '25px',
+                  marginLeft: '20px',
                 }}
               >
                 <Text
@@ -333,7 +338,7 @@ const Home = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   marginTop: '8px',
-                  marginLeft: '25px',
+                  marginLeft: '20px',
                 }}
               >
                 <Text
@@ -388,6 +393,7 @@ const Home = () => {
                   border: '1px solid #707070',
                   borderRadius: '30px',
                   backgroundColor: '#FFFFFF',
+                  marginLeft:-10,
                 }}
               >
                 <DownOutlined
@@ -405,7 +411,7 @@ const Home = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   marginTop: '8px',
-                  marginLeft: '25px',
+                  marginLeft: '20px',
                 }}
               >
                 <Text
@@ -461,7 +467,7 @@ const Home = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   marginTop: '8px',
-                  marginLeft: '25px',
+                  marginLeft: '20px',
                 }}
               >
                 <Text
@@ -516,6 +522,7 @@ const Home = () => {
                   border: '1px solid #707070',
                   borderRadius: '30px',
                   backgroundColor: '#FFFFFF',
+                  marginLeft:-10,
                 }}
               >
                 <SyncOutlined
@@ -533,7 +540,7 @@ const Home = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   marginTop: '8px',
-                  marginLeft: '25px',
+                  marginLeft: '20px',
                 }}
               >
                 <Text
@@ -589,7 +596,7 @@ const Home = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   marginTop: '8px',
-                  marginLeft: '25px',
+                  marginLeft: '20px',
                 }}
               >
                 <Text
@@ -636,7 +643,7 @@ const Home = () => {
               setPageSize(val)
             }}
             style={{ width: '77px', marginLeft: '10px', marginRight: '10px' }}
-            defaultValue={10}
+            defaultValue={50}
           >
             <Option value="10">10</Option>
             <Option value="50">50</Option>
@@ -665,6 +672,7 @@ const Home = () => {
             <RangePicker
               format="YYYY-MM-DD"
               onChange={(val) => onChange(val)}
+              defaultValue={[moment('2022-06-01', 'YYYY-MM-DD'), moment('2022-07-01', 'YYYY-MM-DD')]}
             />
           </Space>
         </Col>
